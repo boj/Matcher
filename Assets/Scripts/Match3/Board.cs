@@ -238,6 +238,60 @@ public class Board : MonoBehaviour {
     }
     return false;
   }
+  
+  private int GetPieceDirection(GameObject piece) {
+    Piece p = piece.GetComponent<Piece>();
+    Vector2 coords = p.GetCoords();
+    // touch lower right
+    if ((int)coords.x - 1 >= 0 && (int)coords.y + 1 < board.GetLength(1)) {
+      if (board[(int)coords.x - 1, (int)coords.y + 1] == lastTouchedPiece) {
+        return 5;
+      }
+    }
+    // touch down
+    if ((int)coords.y + 1 < board.GetLength(1)) {
+      if (board[(int)coords.x, (int)coords.y + 1] == lastTouchedPiece) {
+        return 2;
+      }
+    }
+    // touch lower left
+    if ((int)coords.x + 1 < board.GetLength(0) && (int)coords.y + 1 < board.GetLength(1)) {
+      if (board[(int)coords.x + 1, (int)coords.y + 1] == lastTouchedPiece) {
+        return 4;
+      }
+    }
+    // touch left
+    if ((int)coords.x + 1 < board.GetLength(0)) {
+      if (board[(int)coords.x + 1, (int)coords.y] == lastTouchedPiece) {
+        return 3;
+      }
+    }
+    // touch upper left
+    if ((int)coords.x + 1 < board.GetLength(0) && (int)coords.y - 1 >= 0) {
+      if (board[(int)coords.x + 1, (int)coords.y - 1] == lastTouchedPiece) {
+        return 8;
+      }
+    }
+    // touch up
+    if ((int)coords.y - 1 >= 0) {
+      if (board[(int)coords.x, (int)coords.y - 1] == lastTouchedPiece) {
+        return 7;
+      }
+    }
+    // touch upper right
+    if ((int)coords.x - 1 >= 0 && (int)coords.y - 1 >= 0) {
+      if (board[(int)coords.x - 1, (int)coords.y - 1] == lastTouchedPiece) {
+        return 9;
+      }
+    }
+    // touch right
+    if ((int)coords.x - 1 >= 0) {
+      if (board[(int)coords.x - 1, (int)coords.y] == lastTouchedPiece) {
+        return 6;
+      }
+    }
+    return 0;
+  }
 
   public bool AddTouchedPiece(GameObject piece) {
     if (LastTouchedPiece() == piece || PieceIsPreviousConnected(piece) || PieceIsConnected(piece)) {
@@ -246,7 +300,15 @@ public class Board : MonoBehaviour {
     // if the list is empty then it's a new touch round
     // if we're extending the list and this is the same piece type, add it
     if (touchedPieces.Count == 0 || (touchedPieces.Count > 0 && MatchesType(piece) && CheckSurroundingPieces(piece))) {
+      // determine which direction the piece was touched
+      if (touchedPieces.Count == 0) {
+        piece.GetComponent<Piece>().Touched(1); // initial touch
+      } else {
+        piece.GetComponent<Piece>().Touched(GetPieceDirection(piece));
+      }
+      // add to touched piece chain
       touchedPieces.Add(piece);
+      // set last touched piece to this piece
       lastTouchedPiece = piece;
       return true;
     }

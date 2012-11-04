@@ -20,28 +20,24 @@ public class Piece : MonoBehaviour {
   [HideInInspector]
   public float animationDest;
   
-  //// <summary>
-  //// Overrideable method for handling logic in regards to the direction the piece was touched from.
-  //// </summary>
-  //// <param name="direction">
-  //// 0 - Resets
-  //// 1 - Touched
-  //// 2 - Touched Down
-  //// 3 - Touched Left
-  //// 4 - Touched Lower Left
-  //// 5 - Touched Lower Right
-  //// 6 - Touched Right
-  //// 7 - Touched Up
-  //// 8 - Touched Upper Left
-  //// 9 - Touched Upper Right
-  //// 10 - Connected Left Right
-  //// 11 - Connected Up Down
-  //// 12 - Connected Upper Left Lower Right
-  //// 13 - Connected Upper Right Lower Left
-  //// </param>
-  //public virtual void Touched(int direction) {
-  //  
-  //}
+  // <summary>
+  // Overrideable method for handling logic in regards to the direction the piece was touched from.
+  // </summary>
+  // <param name="direction">
+  // 0 - Resets
+  // 1 - Touched
+  // 2 - Touched Down
+  // 3 - Touched Left
+  // 4 - Touched Lower Left
+  // 5 - Touched Lower Right
+  // 6 - Touched Right
+  // 7 - Touched Up
+  // 8 - Touched Upper Left
+  // 9 - Touched Upper Right
+  // </param>
+  public virtual void Touched(int direction) {
+    
+  }
   
   public void SetBoardRef(Board b) {
     board = b;
@@ -121,6 +117,7 @@ public class Piece : MonoBehaviour {
   public void SysUnTouchPiece() {
     UnTouchPiece();
     SetTouched(false);
+    Touched(0); // untouched command
   }
   
   //// <summary>
