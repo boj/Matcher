@@ -1,5 +1,7 @@
 using UnityEngine;
 
+// A basic input override system so code works on both PC's and smartphones.
+
 public class InputSystem {
   
   public static bool Down(int t) {

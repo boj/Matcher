@@ -9,6 +9,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 400000}
   - 114: {fileID: 11400000}
+  - 114: {fileID: 11400002}
   m_Layer: 0
   m_Name: Board
   m_TagString: Untagged
@@ -37,17 +38,40 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6b75fd6cc25d047e89da6eb652fcb057, type: 1}
   m_Name: 
-  piecePrefabs:
-  - {fileID: 100000, guid: 6fff14f9eefc440338d35428c99928e0, type: 2}
-  - {fileID: 100000, guid: 7020c4834336d4228a3c109e2e44448b, type: 2}
-  - {fileID: 100000, guid: 491ffe0d488a245728da382b02a95f07, type: 2}
-  - {fileID: 100000, guid: ec189b2f7896c4040beb8f9528b4411d, type: 2}
-  - {fileID: 100000, guid: 036afa1c54c214262a20d233e094603f, type: 2}
+  pieces:
+  - id: a
+    piecePrefab: {fileID: 100000, guid: 6fff14f9eefc440338d35428c99928e0, type: 2}
+    dropChance: 100
+  - id: b
+    piecePrefab: {fileID: 100000, guid: 7020c4834336d4228a3c109e2e44448b, type: 2}
+    dropChance: 100
+  - id: c
+    piecePrefab: {fileID: 100000, guid: 491ffe0d488a245728da382b02a95f07, type: 2}
+    dropChance: 100
+  - id: d
+    piecePrefab: {fileID: 100000, guid: ec189b2f7896c4040beb8f9528b4411d, type: 2}
+    dropChance: 100
+  - id: e
+    piecePrefab: {fileID: 100000, guid: 036afa1c54c214262a20d233e094603f, type: 2}
+    dropChance: 100
+  minChanceThreshold: 5
+  maxChanceThreshold: 100
   boardSizeX: 8
   boardSizeY: 8
   lineSpacing: 11
   animateOnStart: 1
   startPosition: 200
+  minimumTouchLimit: 3
+--- !u!114 &11400002
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 100000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b2754e0e3232640649a0a5b0586d93a6, type: 1}
+  m_Name: 
 --- !u!1001 &100100000
 Prefab:
   m_ObjectHideFlags: 1

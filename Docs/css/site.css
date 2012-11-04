@@ -1,0 +1,38 @@
+/* Inspired by http://mxcl.github.com/homebrew/ */
+
+body {
+  color: #f6e6cc;
+  background: #27221a;
+}
+
+h1, h2, h3 {
+  color: #d7af72;
+}
+
+a {
+  text-decoration: none;
+  cursor: pointer;
+  color: #ba832c;
+  font-weight: bold;
+}
+
+#header {
+  text-align: center;
+}
+
+#subtitle {
+  color: #a1804c;
+}
+
+#content {
+  margin: 3em 20% 0 20%;
+}
+
+#footer {
+  text-align: center;
+}
+
+.row {
+  border-top: 2px solid rgba(0, 0, 0, 0.2);
+  padding: 2em 0 1em 0;
+}
