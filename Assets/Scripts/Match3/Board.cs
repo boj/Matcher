@@ -30,6 +30,7 @@ public class Board : MonoBehaviour {
   public bool animateOnStart = false; // animate the pieces to fall into place, otherwise instantiate in place
   public float startPosition = 200; // the point at which piece start falling in regards to their animation axis
   public int minimumTouchLimit = 3;
+  public bool toggleOtherTiles = true; // if true, all other non selected tiles are given a different behaviour (faded, size, etc)
   
   private GameObject[,] board;
   private List<GameObject> touchedPieces = new List<GameObject>();
@@ -310,12 +311,41 @@ public class Board : MonoBehaviour {
       touchedPieces.Add(piece);
       // set last touched piece to this piece
       lastTouchedPiece = piece;
+      MarkExternals();
       return true;
     }
     return false;
   }
   
-  private void ProcessBoard() {
+  private void MarkExternals() {
+    if (!toggleOtherTiles) return;
+    
+    Piece p = lastTouchedPiece.GetComponent<Piece>();
+    for (int x = 0; x < boardSizeX; x++) {
+      for (int y = 0; y < boardSizeY; y++) {
+        Piece piece = board[x,y].GetComponent<Piece>();
+        if (piece.pieceType != p.pieceType) {
+          piece.SysSetExternalPiece();
+        }
+      }
+    }
+  }
+  
+  private void UnMarkExternals() {
+    if (!toggleOtherTiles) return;
+    
+    Piece p = lastTouchedPiece.GetComponent<Piece>();
+    for (int x = 0; x < boardSizeX; x++) {
+      for (int y = 0; y < boardSizeY; y++) {
+        Piece piece = board[x,y].GetComponent<Piece>();
+        if (piece.pieceType != p.pieceType) {
+          piece.SysResetExternalPiece();
+        }
+      }
+    }
+  }
+  
+  private void ProcessBoard() {   
     // remove the selected pieces
     for (int x = 0; x < boardSizeX; x++) {
       for (int y = 0; y < boardSizeY; y++) {
@@ -366,16 +396,26 @@ public class Board : MonoBehaviour {
     }
     
     touchedPieces.Clear();
+    lastTouchedPiece = null;
   }
   
   void Update() {
     if (touchedPieces.Count >= minimumTouchLimit && InputSystem.Up(0)) {
+      // reset marked pieces
+       UnMarkExternals();
+      
       ProcessBoard();
     } else if (InputSystem.Up(0)) {
-      foreach (GameObject piece in touchedPieces) {
-        piece.GetComponent<Piece>().SysUnTouchPiece();
+      if (lastTouchedPiece != null) {
+        // reset marked pieces
+         UnMarkExternals();
+        
+        foreach (GameObject piece in touchedPieces) {
+          piece.GetComponent<Piece>().SysUnTouchPiece();
+        }
+
+        touchedPieces.Clear();
       }
-      touchedPieces.Clear();
     }
   }
 

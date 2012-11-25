@@ -15,6 +15,7 @@ public class Piece : MonoBehaviour {
   public int animationSpeed = 10;
   private bool isTouched = false;
   private bool isAnimating;
+  private bool isSetExternal = false;
   private Vector2 coords;
   private Board board;
   [HideInInspector]
@@ -126,6 +127,38 @@ public class Piece : MonoBehaviour {
   //// </summary>
   public virtual void UnTouchPiece() {
     transform.localScale += new Vector3(touchScaleFactor, touchScaleFactor, 0);
+  }
+  
+  public void SysSetExternalPiece() {
+    if (isSetExternal == false) {
+      isSetExternal = true;
+      SetExternalPiece();
+    }
+  }
+  
+  //// <summary>
+  //// When a piece is touched, other pieces not of it's type are changed in some way (i.e. color, alpha, size, etc).
+  //// </summary>
+  public virtual void SetExternalPiece() {
+    Color color = renderer.material.color;
+    color.a -= 0.5f;
+    renderer.material.color = color;
+  }
+  
+  public void SysResetExternalPiece() {
+    if (isSetExternal == true) {
+      isSetExternal = false;
+      ResetExternalPiece();
+    }
+  }
+  
+  //// <summary>
+  //// Resets a piece back to it's initial state.
+  //// </summary>
+  public virtual void ResetExternalPiece() {
+    Color color = renderer.material.color;
+    color.a += 0.5f;
+    renderer.material.color = color;
   }
   
   public void CheckPiece() {
