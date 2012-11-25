@@ -14,14 +14,97 @@
     <div id="content">
       <div class="row">
         <div class="span9">
-          <p>Using Match System.</p>
+          <h3>Introduction</h3>
+          <p>This Unity3d package is a simple multiple tile matching system similar to games like <a href="https://itunes.apple.com/us/app/dungeon-raid/id403090531?mt=8">Dungeon Raid</a>, <a href="https://itunes.apple.com/us/app/puzzle-craft/id489178757?mt=8">Puzzle Craft</a>, and the like.  Please check out the example project packaged with the system for a concrete look at how everything goes together.</p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="span9">
+          <h2>The Board Controller</h2>
+          <p>This class simply registers a callback, and allows the removed pieces to be post-processed.  The piece type, and number of pieces taken are passed.</p>
         </div>
         <div class="span9">
           <pre>
             <code>
-              
+using UnityEngine;
+using System.Collections;
+
+public class MyBoardController : MonoBehaviour {
+
+  void Start() {
+    GetComponent<Board>().RegisterCallback(ProcessResult);
+  }
+
+  void ProcessResult(string type, int count) {
+    print("TYPE: " + type + ", COUNT: " + count);
+  }
+
+}
             </code>
           </pre>
+        </div>
+      </div>
+      <div class="row">
+        <div class="span9">
+          <h3>Overriding the Piece Class</h3>
+          <p>The first step is to create a new class that extends <i>Piece</i>.  While this isn't required, it's useful for overriding the default animations.</p>
+          <p>In this example we are also overriding the <i>DoAnimate</i> method, and using iTween to drive our piece animations.  The default behaviour simply does vector transforms, however the result is the same.</p>
+        </div>
+        <div class="span9">
+          <pre>
+            <code>
+using UnityEngine;
+using System.Collections;
+using System.Collections.Generic;
+
+public class MyPiece : Piece {
+
+  void Start() {
+    iTween.Init(gameObject);
+  }
+
+  public override void DoAnimate() {
+    SetAnimating(false); // since we are letting iTween handle animation, disable this
+    Hashtable tweenHash = new Hashtable();
+    tweenHash.Add("speed",      animationSpeed);
+    tweenHash.Add("easetype",   iTween.EaseType.linear);
+    tweenHash.Add("y",          animationDest);
+    tweenHash.Add("oncomplete", "AnimationFinished");
+    iTween.MoveTo(gameObject, tweenHash);
+  }
+
+}
+            </code>
+          </pre>
+        </div>
+      </div>
+      <div class="row">
+        <div class="span9">
+          <h3>Setting up the Project</h3>
+          <p>The first step is to create our various board piece prefabs, and attach various scripts to them.</p>
+          <p>This system uses Unity's physics for touch detection, so we need to add a Rigidbody and Box Collider to our tile.  Make sure to check Is Kinematic in the Rigidbody panel so that the engine doesn't have to recalculate the scene's physics each time a tile moves, and deselect Use Gravity since we want our own animations to control the objects.</p>
+          <p>
+            <img src="img/piece-view.png" alt="Piece Prefab"/>
+          </p>
+          <ul>
+            <li><b>Piece Type:</b> This can be any kind of identifying string which differentiates each piece.</li>
+            <li><b>Touch Scale Factor:</b> The number of units to decrease the size of the piece when it is touched.</li>
+            <li><b>Animation Speed:</b> The speed at which the pieces animate when they drop down to fill in the empty areas of the board.</b>
+          </ul>
+          <p>Next we add the Board script and our custom BoardController script to either the Main Camera or some other prefab.</p>
+          <p>
+            <img src="img/board-view.png" alt="Board Prefab"/>
+          </p>
+          <ul>
+            <li><b>Pieces:</b> This is where all the pieces get registered.  Specify the Id (Piece Type), the prefab, and a value between <i>Min Chance Threshold</i> and <i>Max Chance Threshold</i> which designates the chance the piece has to drop when new pieces are added to the board.</li>
+            <li><b>Min Chance Threshold:</b> The minimum chance a piece has to drop.</li>
+            <li><b>Max Chance Threshold:</b> The maximum chance a piece has to drop.</li>
+            <li><b>Board Size X:</b> The number of pieces wide the board is.</li>
+            <li><b>Board Size Y:</b> The number of pieces high the board is.</li>
+            <li><b>Line Spacing:</b> The size of a piece + additional space around it.</li>
+            <li><b>Animate On Start:</b> Whether the board shows up as is, or pieces fall from the top and fill it in on scene load.</li>
+            <li><b>Start Position:</b> Where new pieces start from along the Y axis.</li>
+            <li><b>Minimum Touch Limit:</b> The number of pieces that must be matched before they are removed from the board.</li>
         </div>
       </div>
       <div id="footer" class="row">
