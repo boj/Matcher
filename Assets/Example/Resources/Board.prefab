@@ -62,6 +62,7 @@ MonoBehaviour:
   animateOnStart: 1
   startPosition: 200
   minimumTouchLimit: 3
+  toggleOtherTiles: 1
 --- !u!114 &11400002
 MonoBehaviour:
   m_ObjectHideFlags: 1

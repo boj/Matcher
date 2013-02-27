@@ -1,5 +1,5 @@
 //-----------------------------------------------------------------
-//  Copyright 2012 Brian Jones - Uncanny Works
+//  Copyright 2012-2013 Brian Jones - Uncanny Works
 //	All rights reserved
 //-----------------------------------------------------------------
 
